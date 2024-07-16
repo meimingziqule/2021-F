@@ -1,10 +1,6 @@
 THRESHOLD = (21, 0, -77, 5, -110, 127)
-import sensor, image, time
-from pyb import LED
-import car
-#from pid import PID
-import time
-from pyb import UART
+import sensor, image, time, pyb,math,lcd
+from pyb import UART, LED,Pin, Timer
 import math
 #rho_pid = PID(p=0.37, i=0)
 #theta_pid = PID(p=0.001, i=0)
@@ -18,7 +14,8 @@ sensor.set_hmirror(True)
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QQQVGA)
 sensor.skip_frames(time = 2000)
-clock = time.clock()	
+clock = time.clock()
+lcd.init(freq=15000000)		
 while(True):
 	clock.tick()
 	img = sensor.snapshot().binary([THRESHOLD])
@@ -49,4 +46,4 @@ while(True):
 			uart.write(OUTPUT)
 			uart.write('\r\n')
 			print(OUTPUT)
-		pass
+			lcd.display(img)
