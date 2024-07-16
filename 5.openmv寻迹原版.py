@@ -36,6 +36,7 @@ while(True):
             rho_output = rho_pid.get_pid(rho_err,1)
             theta_output = theta_pid.get_pid(theta_err,1)
             output = rho_output+theta_output
+            print(output)
             car.run(50+output, 50-output)
         else:
             car.run(0,0)
