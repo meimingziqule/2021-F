@@ -46,8 +46,8 @@ if set_windowing:
 # sensor.set_saturation(0)
 # sensor.set_brightness(4)
 # sensor.set_contrast(0)
-# sensor.set_hmirror(True)        # image horizonal mirror
-# sensor.set_vflip(True)          # image vertical flip
+sensor.set_hmirror(True)        # image horizonal mirror
+sensor.set_vflip(True)          # image vertical flip
 # sensor.set_auto_whitebal(False)
 
 sensor.skip_frames()
