@@ -162,7 +162,7 @@ def main(anchors = None,labels = None, model_addr="/sd/demo.kmodel", sensor_wind
     sensor.set_vflip(True)
     sensor.run(1)
     sensor.skip_frames(n=10)
-    global num,begin_flag,task_flag,red_thresholds,red_flag,condi_flag,num1,num2,send_num_flag1,send_num_flag2,send_num_flag,task2_num_list,task1_num_list,task2_3_num_flag,
+    global num,begin_flag,task_flag,red_thresholds,red_flag,condi_flag,num1,num2,send_num_flag1,send_num_flag2,send_num_flag,task2_num_list,task1_num_list,task2_3_num_flag
     
     
     task = None
@@ -233,7 +233,7 @@ def main(anchors = None,labels = None, model_addr="/sd/demo.kmodel", sensor_wind
                             #print("#0c;")               ''' 
             
         #task2    
-        elif task_flag == 'b': 
+        elif  task_flag== 'b': 
             kpu.init_yolo2(task, 0.4, 0.4, 5, anchors) # threshold:[0,1], nms_value: [0, 1]
             img.draw_string(0, 0, "task2", color=(255, 0, 0), scale=2)
             #print("正在执行task2")
@@ -262,6 +262,7 @@ def main(anchors = None,labels = None, model_addr="/sd/demo.kmodel", sensor_wind
                         img.draw_string(0, 100, "num:%d"%(num) , scale=2, color=(255, 255, 255))
                         num = 0
                         num1,num2 = find_most_two_num(task2_num_list)#返回出现频率最高的两个数
+                        num1,num2 = int(num1),int(num2)
                         task2_num_list.clear()
                         print("num1:%d,num2:%d")
 
@@ -271,23 +272,11 @@ def main(anchors = None,labels = None, model_addr="/sd/demo.kmodel", sensor_wind
                     if labels[obj.classid()] == num2:
                         num2_center_x = center_x
                         num2_center_y = center_y
-                    if num1_center_x is not None and num1_center_y is not None and num2_center_x is not None and num2_center_y is not None:
-                        if num1_center_x < num2_center_x:
-                            task2_3_num_flag = f"#0l{num1}r{num2};"
-                        else:
-                            task2_3_num_flag = f"#0r{num1}l{num2};"
+
+                    if all([num1_center_x, num1_center_y, num2_center_x, num2_center_y]):
+                        task2_3_num_flag = "#0l%sr%s;"%(num1,num2) if num1_center_x < num2_center_x else "#0l%sr%s;"%(num2,num1)
                         uart.write(task2_3_num_flag)
-                        print("task2_3_num_flag:%s" % task2_3_num_flag)
-                        '''if num1_center_x < num2_center_x:
-                            task2_3_num_flag1 = str("#0l") + str(num1)#  #0l3
-                            task2_3_num_flag2 = str("#0r") + str(num2)#  #0r4
-                        else:
-                            task2_3_num_flag1 = str("#0r") + str(num1)#  #0r3
-                            task2_3_num_flag2 = str("#0l") + str(num2)#  #0l4
-                        task2_3_num_flag = task2_3_num_flag1+ task2_3_num_flag2
-                        task2_3_num_flag  = task2_3_num_flag[:4]+task2_3_num_flag[6:]+';'  # #0l3r4;
-                        uart.write(task2_3_num_flag)
-                        print("task2_3_num_flag:%s"%task2_3_num_flag)           '''
+                        print("task2_3_num_flag:%s"%task2_3_num_flag)           
                         
         lcd.display(img)
 
