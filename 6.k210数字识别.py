@@ -284,4 +284,4 @@ def main(anchors = None,labels = None, model_addr="/sd/demo.kmodel", sensor_wind
 if __name__ == "__main__":
     
         # main(anchors = anchors, labels=labels, model_addr=0x300000, lcd_rotation=0)
-        main(anchors = anchors, labels=labels, model_addr="/sd/demo.kmodel")
+        main(anchors = anchors, labels=labels, model_addr="/sd/demo.kmodel")v     
